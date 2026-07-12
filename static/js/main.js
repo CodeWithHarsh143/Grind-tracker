@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // TODO:
   // Call lucide.createIcons() here so every <i data-lucide="..."> in
   // base.html / navbar.html / header.html / footer.html / auth pages renders.
-
+     lucide.createIcons();
 
   /* =======================================================
      Theme

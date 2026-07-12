@@ -1,13 +1,6 @@
-from flask import Flask, abort, flash, redirect, render_template, request, url_for
-from login import login_bp
-app = Flask(__name__)
+from app.__init__ import create_app
 
-@app.route("/")
-def home():
-    return render_template("home.html")
+app = create_app()
 
-app.register_blueprint(login_bp)
-if __name__ == "__main__":
-    app.run(debug=True)
-
-
+if __name__ == '__main__':
+  app.run(debug=True)

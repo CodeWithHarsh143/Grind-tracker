@@ -114,7 +114,8 @@
 
       <p class="mt-8 text-center text-sm text-[var(--color-muted)]">
         Don't have an account?
-        <a href="#" data-endpoint="register" class="text-[var(--color-primary)] font-medium hover:underline">Sign up</a>
+        <a href="{{ url_for('register.register') }}" data-endpoint="register"
+          class="text-[var(--color-primary)] font-medium hover:underline">Sign up</a>
       </p>
     </div>
   </div>
