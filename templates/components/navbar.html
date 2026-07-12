@@ -1,0 +1,162 @@
+<!--
+  Navbar
+  JS hooks:
+    #navbar              -> add `navbar-scrolled` class past scrollY > 8px
+    #theme-toggle-btn     -> toggle `dark` class on <html>, swap icon, persist to localStorage
+    #mobile-menu-btn      -> toggle #mobile-menu visibility, swap menu/close icon
+    [data-nav-link]       -> compare href to current path, add active styles
+-->
+<nav id="navbar" class="sticky top-0 z-40 w-full glass transition-shadow duration-300" aria-label="Primary navigation">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+
+      <!-- Logo -->
+      <a href="{{ url_for('home') if 'home' in (request.url_rule.endpoint if request.url_rule else '') else '/' }}"
+        class="flex items-center gap-2 shrink-0 group" aria-label="LeetCode Tracker home">
+        <span
+          class="grid place-items-center w-9 h-9 rounded-lg bg-[var(--color-primary)] text-white font-display font-bold text-sm transition-transform group-hover:scale-105">
+          LT
+        </span>
+        <span class="font-display font-semibold text-lg tracking-tight hidden sm:block">
+          LeetCode Tracker
+        </span>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <ul class="hidden lg:flex items-center gap-1 font-medium text-sm">
+        {% set nav_items = [
+          ('Home', 'home', 'home'),
+          ('Dashboard', 'dashboard', 'layout-dashboard'),
+          ('Problems', 'problems', 'list-checks'),
+          ('Calendar', 'calendar', 'calendar-days'),
+          ('Statistics', 'statistics', 'bar-chart-3'),
+          ('Goals', 'goals', 'target'),
+          ('Notes', 'notes', 'notebook-pen'),
+        ] %}
+        {% for label, endpoint, icon in nav_items %}
+        <li>
+          <a href="{{ '#' }}" data-nav-link data-endpoint="{{ endpoint }}" class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-[var(--color-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]/40 transition-colors
+                     aria-[current=page]:text-[var(--color-primary)] aria-[current=page]:bg-[var(--color-primary)]/10">
+            <i data-lucide="{{ icon }}" class="w-4 h-4"></i>
+            <span>{{ label }}</span>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+
+      <!-- Right-side controls -->
+      <div class="flex items-center gap-2">
+
+        <!-- Search (icon trigger, wire up later if needed) -->
+        <button type="button"
+          class="hidden md:grid place-items-center w-9 h-9 rounded-lg text-[var(--color-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]/40 transition-colors"
+          aria-label="Search">
+          <i data-lucide="search" class="w-4 h-4"></i>
+        </button>
+
+        <!-- Notifications -->
+        <button type="button"
+          class="hidden md:grid place-items-center w-9 h-9 rounded-lg text-[var(--color-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]/40 transition-colors relative"
+          aria-label="Notifications">
+          <i data-lucide="bell" class="w-4 h-4"></i>
+          <span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-[var(--color-danger)]"></span>
+        </button>
+
+        <!-- Theme Toggle -->
+        <!-- TODO: JS — on click, toggle `dark` class on <html>, swap which icon is visible, save to localStorage -->
+        <button type="button" id="theme-toggle-btn"
+          class="grid place-items-center w-9 h-9 rounded-lg text-[var(--color-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]/40 transition-colors"
+          aria-label="Toggle color theme" aria-pressed="false">
+          <i data-lucide="moon" id="icon-moon" class="w-4 h-4 hidden dark:block"></i>
+          <i data-lucide="sun" id="icon-sun" class="w-4 h-4 block dark:hidden"></i>
+        </button>
+
+        <!-- Auth buttons: show/hide with JS or Jinja based on session -->
+        <div class="hidden sm:flex items-center gap-2" id="auth-buttons">
+          {% if session and session.get('user_id') %}
+          <!-- Profile dropdown trigger -->
+          <div class="relative" id="profile-menu">
+            <button type="button" id="profile-menu-btn"
+              class="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-lg hover:bg-[var(--color-border)]/40 transition-colors"
+              aria-haspopup="true" aria-expanded="false">
+              <span
+                class="grid place-items-center w-7 h-7 rounded-full bg-[var(--color-accent)]/20 text-[var(--color-accent)]">
+                <i data-lucide="user" class="w-4 h-4"></i>
+              </span>
+              <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-[var(--color-muted)]"></i>
+            </button>
+            <!-- TODO: JS — toggle this dropdown open/closed, close on outside click / Escape -->
+            <div id="profile-dropdown"
+              class="hidden absolute right-0 mt-2 w-48 rounded-xl glass shadow-lg py-1.5 text-sm">
+              <a href="#" data-endpoint="profile"
+                class="flex items-center gap-2 px-3 py-2 hover:bg-[var(--color-border)]/40">
+                <i data-lucide="user" class="w-4 h-4"></i> Profile
+              </a>
+              <a href="#" data-endpoint="settings"
+                class="flex items-center gap-2 px-3 py-2 hover:bg-[var(--color-border)]/40">
+                <i data-lucide="settings" class="w-4 h-4"></i> Settings
+              </a>
+              <hr class="my-1 border-[var(--color-border)]" />
+              <button type="button"
+                class="w-full flex items-center gap-2 px-3 py-2 text-left text-[var(--color-danger)] hover:bg-[var(--color-danger)]/10"
+                id="logout-btn">
+                <i data-lucide="log-out" class="w-4 h-4"></i> Logout
+              </button>
+            </div>
+          </div>
+          {% else %}
+          <a href="{{ url_for('login.login') }}" data-endpoint="login"
+            class="px-4 py-2 rounded-lg text-sm font-medium text-[var(--color-text)] hover:bg-[var(--color-border)]/40 transition-colors">
+            Log in
+          </a>
+          <a href="{{ '#' }}" data-endpoint="register"
+            class="px-4 py-2 rounded-lg text-sm font-medium text-white bg-[var(--color-primary)] hover:opacity-90 transition-opacity shadow-sm">
+            Sign up
+          </a>
+          {% endif %}
+        </div>
+
+        <!-- Mobile menu button -->
+        <button type="button" id="mobile-menu-btn"
+          class="lg:hidden grid place-items-center w-9 h-9 rounded-lg text-[var(--color-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]/40 transition-colors"
+          aria-label="Open main menu" aria-expanded="false" aria-controls="mobile-menu">
+          <i data-lucide="menu" id="icon-menu" class="w-5 h-5"></i>
+          <i data-lucide="x" id="icon-close" class="w-5 h-5 hidden"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <!-- TODO: JS — toggle `hidden` on this panel from #mobile-menu-btn; trap focus while open -->
+  <div id="mobile-menu" class="hidden lg:hidden border-t border-[var(--color-border)] px-4 pt-2 pb-4 space-y-1">
+    {% for label, endpoint, icon in [
+      ('Home', 'home', 'home'),
+      ('Dashboard', 'dashboard', 'layout-dashboard'),
+      ('Problems', 'problems', 'list-checks'),
+      ('Calendar', 'calendar', 'calendar-days'),
+      ('Statistics', 'statistics', 'bar-chart-3'),
+      ('Goals', 'goals', 'target'),
+      ('Notes', 'notes', 'notebook-pen'),
+      ('Profile', 'profile', 'user'),
+    ] %}
+    <a href="#" data-nav-link data-endpoint="{{ endpoint }}"
+      class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[var(--color-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-border)]/40 transition-colors">
+      <i data-lucide="{{ icon }}" class="w-4 h-4"></i>
+      <span>{{ label }}</span>
+    </a>
+    {% endfor %}
+    <hr class="my-2 border-[var(--color-border)]" />
+    {% if session and session.get('user_id') %}
+    <button type="button" id="logout-btn-mobile"
+      class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[var(--color-danger)] hover:bg-[var(--color-danger)]/10">
+      <i data-lucide="log-out" class="w-4 h-4"></i> Logout
+    </button>
+    {% else %}
+    <a href="#" data-endpoint="login"
+      class="block px-3 py-2.5 rounded-lg text-[var(--color-text)] hover:bg-[var(--color-border)]/40">Log in</a>
+    <a href="#" data-endpoint="register"
+      class="block px-3 py-2.5 rounded-lg text-center text-white bg-[var(--color-primary)] hover:opacity-90">Sign up</a>
+    {% endif %}
+  </div>
+</nav>

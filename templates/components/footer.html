@@ -1,0 +1,74 @@
+<footer class="border-t border-[var(--color-border)] mt-auto">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+
+      <!-- Logo + tagline -->
+      <div class="col-span-2 md:col-span-1">
+        <a href="#" data-endpoint="home" class="flex items-center gap-2 mb-3">
+          <span class="grid place-items-center w-8 h-8 rounded-lg bg-[var(--color-primary)] text-white font-display font-bold text-xs">LT</span>
+          <span class="font-display font-semibold">LeetCode Tracker</span>
+        </a>
+        <p class="text-sm text-[var(--color-muted)] leading-relaxed max-w-xs">
+          A focused dashboard for logging problems, holding your streak, and seeing the shape of your progress.
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h3 class="font-display font-semibold text-sm mb-4">Quick links</h3>
+        <ul class="space-y-2.5 text-sm text-[var(--color-muted)]">
+          <li><a href="#" data-endpoint="dashboard" class="hover:text-[var(--color-text)] transition-colors">Dashboard</a></li>
+          <li><a href="#" data-endpoint="problems" class="hover:text-[var(--color-text)] transition-colors">Problems</a></li>
+          <li><a href="#" data-endpoint="statistics" class="hover:text-[var(--color-text)] transition-colors">Statistics</a></li>
+          <li><a href="#" data-endpoint="goals" class="hover:text-[var(--color-text)] transition-colors">Goals</a></li>
+        </ul>
+      </div>
+
+      <!-- Resources -->
+      <div>
+        <h3 class="font-display font-semibold text-sm mb-4">Resources</h3>
+        <ul class="space-y-2.5 text-sm text-[var(--color-muted)]">
+          <li><a href="https://github.com" target="_blank" rel="noopener noreferrer" class="hover:text-[var(--color-text)] transition-colors">GitHub</a></li>
+          <li><a href="#" data-endpoint="privacy" class="hover:text-[var(--color-text)] transition-colors">Privacy</a></li>
+          <li><a href="#" data-endpoint="terms" class="hover:text-[var(--color-text)] transition-colors">Terms</a></li>
+          <li><a href="#" data-endpoint="contact" class="hover:text-[var(--color-text)] transition-colors">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Social -->
+      <div>
+        <h3 class="font-display font-semibold text-sm mb-4">Elsewhere</h3>
+        <div class="flex items-center gap-2">
+          <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub"
+             class="grid place-items-center w-9 h-9 rounded-lg border border-[var(--color-border)] hover:bg-[var(--color-border)]/40 transition-colors">
+            <i data-lucide="github" class="w-4 h-4"></i>
+          </a>
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"
+             class="grid place-items-center w-9 h-9 rounded-lg border border-[var(--color-border)] hover:bg-[var(--color-border)]/40 transition-colors">
+            <i data-lucide="linkedin" class="w-4 h-4"></i>
+          </a>
+          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter / X"
+             class="grid place-items-center w-9 h-9 rounded-lg border border-[var(--color-border)] hover:bg-[var(--color-border)]/40 transition-colors">
+            <i data-lucide="twitter" class="w-4 h-4"></i>
+          </a>
+          <a href="mailto:hello@example.com" aria-label="Email"
+             class="grid place-items-center w-9 h-9 rounded-lg border border-[var(--color-border)] hover:bg-[var(--color-border)]/40 transition-colors">
+            <i data-lucide="mail" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quiet echo of the heatmap signature motif -->
+    <div class="flex flex-wrap gap-1 my-8 opacity-70" aria-hidden="true">
+      {% for i in range(28) %}
+        <span class="heatmap-dot" data-level="{{ i % 5 }}"></span>
+      {% endfor %}
+    </div>
+
+    <div class="pt-6 border-t border-[var(--color-border)] flex flex-col sm:flex-row items-center justify-between gap-3">
+      <p class="text-xs text-[var(--color-muted)] font-mono">© {{ current_year or 2026 }} LeetCode Tracker. All rights reserved.</p>
+      <p class="text-xs text-[var(--color-muted)]">Not affiliated with LeetCode.</p>
+    </div>
+  </div>
+</footer>

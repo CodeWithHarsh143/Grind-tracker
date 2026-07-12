@@ -1,0 +1,97 @@
+<!--
+  Header / Hero
+  Signature element: the "submission heatmap" texture (see style.css .heatmap-texture)
+  echoes LeetCode's own contribution calendar — grounds the hero in the product's
+  own visual language instead of a generic gradient blob.
+
+  JS hooks:
+    .animate-fade-up elements -> could be scroll-triggered instead of load-triggered;
+                                   left as CSS-only animation for now, see main.js Animations section
+    #hero-progress-ring        -> stroke-dashoffset should be set from real "solved / total" data
+-->
+<header class="relative overflow-hidden border-b border-[var(--color-border)]">
+  <!-- Ambient heatmap texture, purely decorative -->
+  <div class="absolute inset-0 heatmap-texture pointer-events-none" aria-hidden="true"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 sm:pt-24 sm:pb-28">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+
+      <!-- Copy + CTAs -->
+      <div class="animate-fade-up">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium font-mono bg-[var(--color-primary)]/10 text-[var(--color-primary)] mb-5">
+          <i data-lucide="flame" class="w-3.5 h-3.5"></i>
+          Built for consistent grinders
+        </span>
+
+        <h1 class="font-display font-bold tracking-tight text-4xl sm:text-5xl lg:text-[3.25rem] leading-[1.08] mb-5">
+          Every problem you solve,
+          <span class="text-[var(--color-primary)]">plotted on one grid.</span>
+        </h1>
+
+        <p class="text-[var(--color-muted)] text-lg leading-relaxed max-w-xl mb-8">
+          Log submissions, track your streak, and see your progress across every
+          difficulty and topic — without leaving your own dashboard.
+        </p>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <a href="#" data-endpoint="register"
+             class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-white bg-[var(--color-primary)] hover:opacity-90 transition-opacity shadow-lg shadow-[var(--color-primary)]/20">
+            Start tracking
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+          <a href="#" data-endpoint="dashboard"
+             class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium border border-[var(--color-border)] hover:bg-[var(--color-border)]/40 transition-colors">
+            View demo dashboard
+          </a>
+        </div>
+      </div>
+
+      <!-- Illustration placeholder: progress ring + stat cards -->
+      <div class="relative animate-fade-up" style="animation-delay: 120ms">
+        <div class="glass rounded-3xl p-8 shadow-xl">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <p class="text-sm text-[var(--color-muted)]">This week</p>
+              <p class="font-display font-semibold text-lg">Solving activity</p>
+            </div>
+            <!-- Progress Ring Placeholder -->
+            <svg id="hero-progress-ring" viewBox="0 0 100 100" class="w-16 h-16 -rotate-90" role="img" aria-label="Weekly goal progress">
+              <circle cx="50" cy="50" r="45" fill="none" stroke="var(--color-border)" stroke-width="8" />
+              <!-- TODO: JS — set stroke-dashoffset (0–283) based on real progress; circumference = 2*pi*45 ≈ 283 -->
+              <circle cx="50" cy="50" r="45" fill="none" stroke="var(--color-accent)" stroke-width="8"
+                      stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="90" />
+            </svg>
+          </div>
+
+          <!-- Decorative heatmap grid (illustration placeholder) -->
+          <div class="grid grid-cols-12 gap-1 mb-6" aria-hidden="true">
+            {% for i in range(84) %}
+              <span class="heatmap-dot" data-level="{{ i % 5 }}"></span>
+            {% endfor %}
+          </div>
+
+          <div class="grid grid-cols-3 gap-4 pt-6 border-t border-[var(--color-border)]">
+            <div>
+              <p class="font-display font-bold text-2xl font-mono">500+</p>
+              <p class="text-xs text-[var(--color-muted)] mt-1">Problems solved</p>
+            </div>
+            <div>
+              <p class="font-display font-bold text-2xl font-mono">365</p>
+              <p class="text-xs text-[var(--color-muted)] mt-1">Day streak</p>
+            </div>
+            <div>
+              <p class="font-display font-bold text-2xl font-mono">1800+</p>
+              <p class="text-xs text-[var(--color-muted)] mt-1">Contest rating</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating accent badge -->
+        <div class="absolute -top-4 -right-4 hidden sm:flex items-center gap-2 glass rounded-full pl-2 pr-3 py-1.5 shadow-lg animate-pulse-ring">
+          <span class="w-2 h-2 rounded-full bg-[var(--color-success)]"></span>
+          <span class="text-xs font-medium font-mono">Streak active</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

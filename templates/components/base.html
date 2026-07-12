@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<!--
+  Theme is applied here, before paint, to avoid a flash of the
+  wrong theme. JS: read localStorage('theme') or system
+  preference and set the `class="dark"` attribute below
+  synchronously (inline script, head, before stylesheet paint).
+-->
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}LeetCode Tracker{% endblock %}</title>
+  <meta name="description" content="{% block description %}Track your LeetCode problem-solving journey — streaks, stats, goals, and notes in one dashboard.{% endblock %}" />
+
+  <!-- TODO: JS — theme bootstrap script (inline, must run before Tailwind/CSS paint)
+       1. Read localStorage('theme')
+       2. If absent, read `window.matchMedia('(prefers-color-scheme: dark)')`
+       3. Add/remove `dark` class on <html>
+       This MUST be a blocking inline <script> placed here in <head>,
+       not in main.js, or the page will flash the wrong theme on load. -->
+  <script>
+    // TODO: theme bootstrap logic goes here (see comment above)
+  </script>
+
+  <!-- Tailwind (CDN, no build step) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Space Grotesk"', 'ui-sans-serif', 'sans-serif'],
+            body: ['"Inter"', 'ui-sans-serif', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+
+  <!-- Custom design tokens + signature heatmap texture -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}" />
+
+  {% block head %}{% endblock %}
+</head>
+
+<body class="font-body bg-[var(--color-bg)] text-[var(--color-text)] antialiased min-h-screen flex flex-col">
+
+  <!-- ===================== Navbar ===================== -->
+  {% include "components/navbar.html" %}
+
+  <!-- ===================== Flash Messages ===================== -->
+  <!-- TODO: JS — auto-dismiss each flash message after ~4s, with a manual close button -->
+  <div id="flash-container" class="fixed top-20 right-4 z-50 flex flex-col gap-3 w-[calc(100%-2rem)] sm:w-96" aria-live="polite">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div
+            class="flash-message animate-toast-in flex items-start gap-3 rounded-xl p-4 shadow-lg glass border-l-4
+              {{ 'border-[var(--color-success)]' if category == 'success' else
+                 'border-[var(--color-danger)]' if category == 'danger' or category == 'error' else
+                 'border-[var(--color-warning)]' if category == 'warning' else
+                 'border-[var(--color-accent)]' }}"
+            data-category="{{ category }}"
+            role="status"
+          >
+            <span class="text-sm flex-1 text-[var(--color-text)]">{{ message }}</span>
+            <button type="button" class="flash-dismiss text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors" aria-label="Dismiss message">
+              <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <!-- ===================== Header (optional per-page hero) ===================== -->
+  {% block header %}{% endblock %}
+
+  <!-- ===================== Main Content ===================== -->
+  <main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- ===================== Footer ===================== -->
+  {% include "components/footer.html" %}
+
+  <!-- Core script (icons, theme toggle, navbar, forms, animations — logic implemented by you) -->
+  <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+
+  <!-- TODO: JS — call lucide.createIcons() once DOM + lucide script are ready -->
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

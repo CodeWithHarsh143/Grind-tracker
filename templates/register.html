@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block title %}Sign up — LeetCode Tracker{% endblock %}
+
+{% block content %}
+<div class="relative min-h-[calc(100vh-4rem)] flex items-center justify-center py-16 overflow-hidden">
+  <div class="absolute inset-0 heatmap-texture pointer-events-none" aria-hidden="true"></div>
+
+  <div class="relative w-full max-w-md mx-auto px-4">
+    <div class="glass rounded-3xl p-8 sm:p-10 shadow-xl animate-fade-up">
+
+      <div class="mb-8 text-center">
+        <span class="inline-grid place-items-center w-12 h-12 rounded-xl bg-[var(--color-primary)] text-white font-display font-bold mb-4">LT</span>
+        <h1 class="font-display font-bold text-2xl">Create your account</h1>
+        <p class="text-sm text-[var(--color-muted)] mt-1.5">Start your streak. It takes less than a minute.</p>
+      </div>
+
+      <!-- Form-level error placeholder -->
+      <!-- TODO: JS — show on failed registration (e.g. email already taken) -->
+      <div id="register-form-error" class="hidden mb-5 flex items-start gap-2.5 rounded-xl px-4 py-3 text-sm bg-[var(--color-danger)]/10 text-[var(--color-danger)]" role="alert">
+        <i data-lucide="alert-circle" class="w-4 h-4 mt-0.5 shrink-0"></i>
+        <span data-error-text>That email is already registered.</span>
+      </div>
+
+      <!-- Form-level success placeholder -->
+      <!-- TODO: JS — show on successful registration before redirect -->
+      <div id="register-form-success" class="hidden mb-5 flex items-start gap-2.5 rounded-xl px-4 py-3 text-sm bg-[var(--color-success)]/10 text-[var(--color-success)]" role="status">
+        <i data-lucide="check-circle-2" class="w-4 h-4 mt-0.5 shrink-0"></i>
+        <span data-success-text>Account created. Redirecting…</span>
+      </div>
+
+      <!-- TODO: JS — intercept submit, run validation (see main.js: Forms > Registration validation), then POST -->
+      <form id="register-form" novalidate class="space-y-5" method="POST" action="#">
+
+        <!-- Name -->
+        <div>
+          <label for="register-name" class="block text-sm font-medium mb-1.5">Full name</label>
+          <div class="relative">
+            <i data-lucide="user" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-muted)]"></i>
+            <input
+              type="text" id="register-name" name="name" required autocomplete="name"
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[var(--color-bg)] border border-[var(--color-border)] focus:border-[var(--color-primary)] outline-none transition-colors text-sm"
+              placeholder="Jane Doe"
+              aria-describedby="register-name-error"
+            />
+          </div>
+          <p id="register-name-error" class="hidden mt-1.5 text-xs text-[var(--color-danger)]">Enter your full name.</p>
+        </div>
+
+        <!-- Username -->
+        <div>
+          <label for="register-username" class="block text-sm font-medium mb-1.5">Username</label>
+          <div class="relative">
+            <i data-lucide="at-sign" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-muted)]"></i>
+            <input
+              type="text" id="register-username" name="username" required autocomplete="username"
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[var(--color-bg)] border border-[var(--color-border)] focus:border-[var(--color-primary)] outline-none transition-colors text-sm"
+              placeholder="janedoe"
+              aria-describedby="register-username-error"
+            />
+          </div>
+          <!-- TODO: JS — could show live availability check here (optional) -->
+          <p id="register-username-error" class="hidden mt-1.5 text-xs text-[var(--color-danger)]">Username must be at least 3 characters.</p>
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label for="register-email" class="block text-sm font-medium mb-1.5">Email</label>
+          <div class="relative">
+            <i data-lucide="mail" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-muted)]"></i>
+            <input
+              type="email" id="register-email" name="email" required autocomplete="email"
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[var(--color-bg)] border border-[var(--color-border)] focus:border-[var(--color-primary)] outline-none transition-colors text-sm"
+              placeholder="you@example.com"
+              aria-describedby="register-email-error"
+            />
+          </div>
+          <p id="register-email-error" class="hidden mt-1.5 text-xs text-[var(--color-danger)]">Enter a valid email address.</p>
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label for="register-password" class="block text-sm font-medium mb-1.5">Password</label>
+          <div class="relative">
+            <i data-lucide="lock" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-muted)]"></i>
+            <input
+              type="password" id="register-password" name="password" required autocomplete="new-password"
+              class="w-full pl-10 pr-11 py-2.5 rounded-xl bg-[var(--color-bg)] border border-[var(--color-border)] focus:border-[var(--color-primary)] outline-none transition-colors text-sm"
+              placeholder="••••••••"
+              aria-describedby="register-password-error password-requirements"
+            />
+            <!-- Password eye icon placeholder -->
+            <!-- TODO: JS — toggle input type text/password, swap eye / eye-off icon -->
+            <button type="button" id="register-password-toggle" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--color-muted)] hover:text-[var(--color-text)]" aria-label="Show password">
+              <i data-lucide="eye" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+          <!-- Strength meter placeholder -->
+          <!-- TODO: JS — update width (0-100%) and color of #strength-bar-fill based on password strength score -->
+          <div class="mt-2.5">
+            <div class="h-1.5 rounded-full bg-[var(--color-border)] overflow-hidden">
+              <div id="strength-bar-fill" class="h-full w-0 rounded-full bg-[var(--color-danger)] transition-all duration-300"></div>
+            </div>
+            <p id="strength-label" class="mt-1 text-xs text-[var(--color-muted)]">Password strength: <span data-strength-text>—</span></p>
+          </div>
+
+          <!-- Password requirements placeholder -->
+          <!-- TODO: JS — toggle each item's check/x icon and color as the user types -->
+          <ul id="password-requirements" class="mt-2.5 space-y-1 text-xs text-[var(--color-muted)]">
+            <li class="flex items-center gap-1.5" data-requirement="length"><i data-lucide="circle" class="w-3 h-3"></i> At least 8 characters</li>
+            <li class="flex items-center gap-1.5" data-requirement="uppercase"><i data-lucide="circle" class="w-3 h-3"></i> One uppercase letter</li>
+            <li class="flex items-center gap-1.5" data-requirement="number"><i data-lucide="circle" class="w-3 h-3"></i> One number</li>
+            <li class="flex items-center gap-1.5" data-requirement="special"><i data-lucide="circle" class="w-3 h-3"></i> One special character</li>
+          </ul>
+          <p id="register-password-error" class="hidden mt-1.5 text-xs text-[var(--color-danger)]">Password doesn't meet the requirements above.</p>
+        </div>
+
+        <!-- Confirm Password -->
+        <div>
+          <label for="register-confirm-password" class="block text-sm font-medium mb-1.5">Confirm password</label>
+          <div class="relative">
+            <i data-lucide="lock" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-muted)]"></i>
+            <input
+              type="password" id="register-confirm-password" name="confirm_password" required autocomplete="new-password"
+              class="w-full pl-10 pr-11 py-2.5 rounded-xl bg-[var(--color-bg)] border border-[var(--color-border)] focus:border-[var(--color-primary)] outline-none transition-colors text-sm"
+              placeholder="••••••••"
+              aria-describedby="register-confirm-error"
+            />
+            <button type="button" id="register-confirm-toggle" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--color-muted)] hover:text-[var(--color-text)]" aria-label="Show password">
+              <i data-lucide="eye" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <!-- TODO: JS — show when confirm password !== password -->
+          <p id="register-confirm-error" class="hidden mt-1.5 text-xs text-[var(--color-danger)]">Passwords don't match.</p>
+        </div>
+
+        <!-- Accept Terms -->
+        <div>
+          <label class="flex items-start gap-2.5 text-sm text-[var(--color-muted)] cursor-pointer select-none">
+            <input type="checkbox" id="accept-terms" name="accept_terms" required class="mt-0.5 w-4 h-4 rounded border-[var(--color-border)] text-[var(--color-primary)] focus:ring-[var(--color-primary)]" />
+            <span>
+              I agree to the
+              <a href="#" data-endpoint="terms" class="text-[var(--color-primary)] hover:underline">Terms of Service</a>
+              and
+              <a href="#" data-endpoint="privacy" class="text-[var(--color-primary)] hover:underline">Privacy Policy</a>.
+            </span>
+          </label>
+          <p id="accept-terms-error" class="hidden mt-1.5 text-xs text-[var(--color-danger)]">You must accept the terms to continue.</p>
+        </div>
+
+        <!-- Submit -->
+        <button
+          type="submit" id="register-submit-btn"
+          class="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-medium text-white bg-[var(--color-primary)] hover:opacity-90 transition-opacity shadow-lg shadow-[var(--color-primary)]/20"
+        >
+          <!-- TODO: JS — swap to a spinner + "Creating account…" while the request is in flight -->
+          <span data-btn-label>Create account</span>
+        </button>
+      </form>
+
+      <p class="mt-8 text-center text-sm text-[var(--color-muted)]">
+        Already have an account?
+        <a href="#" data-endpoint="login" class="text-[var(--color-primary)] font-medium hover:underline">Log in</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends "components/base.html" %}
+
+{% block title %}LeetCode Tracker — Track your progress, keep your streak{% endblock %}
+
+{% block header %}
+  {% include "components/header.html" %}
+{% endblock %}
+
+{% block content %}
+
+  <!-- ===================== Features ===================== -->
+  <section class="py-20 sm:py-28" aria-labelledby="features-heading">
+    <div class="text-center max-w-2xl mx-auto mb-14">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium font-mono bg-[var(--color-accent)]/10 text-[var(--color-accent)] mb-4">
+        What it does
+      </span>
+      <h2 id="features-heading" class="font-display font-bold text-3xl sm:text-4xl tracking-tight mb-3">
+        Everything your grind needs, nothing it doesn't
+      </h2>
+      <p class="text-[var(--color-muted)] text-lg">
+        One dashboard for the four things that actually move the needle.
+      </p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      {% set features = [
+        ('list-checks', 'Problem log', 'Record every submission with difficulty, topic, and your own notes attached.'),
+        ('calendar-days', 'Streak calendar', 'A heatmap of every day you showed up, so the gaps are as visible as the wins.'),
+        ('target', 'Goals', 'Set weekly or topic-based targets and watch the ring fill in as you close them out.'),
+        ('bar-chart-3', 'Statistics', 'Break your solved problems down by difficulty, topic, and time to see where you\'re actually strong.'),
+      ] %}
+      {% for icon, title, desc in features %}
+        <div class="group rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+          <span class="inline-grid place-items-center w-11 h-11 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] mb-5 group-hover:bg-[var(--color-primary)] group-hover:text-white transition-colors">
+            <i data-lucide="{{ icon }}" class="w-5 h-5"></i>
+          </span>
+          <h3 class="font-display font-semibold text-lg mb-2">{{ title }}</h3>
+          <p class="text-sm text-[var(--color-muted)] leading-relaxed">{{ desc }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ===================== How it works ===================== -->
+  <!-- A real 3-step sequence, so numbering the steps encodes something true here -->
+  <section class="py-20 sm:py-28 border-t border-[var(--color-border)]" aria-labelledby="how-it-works-heading">
+    <div class="text-center max-w-2xl mx-auto mb-14">
+      <h2 id="how-it-works-heading" class="font-display font-bold text-3xl sm:text-4xl tracking-tight mb-3">
+        Three steps, then it runs itself
+      </h2>
+      <p class="text-[var(--color-muted)] text-lg">
+        Set it up once. After that, logging a problem takes seconds.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8 relative">
+      {% set steps = [
+        ('01', 'Log a problem', 'Paste the LeetCode link or fill in the name, difficulty, and topic by hand.'),
+        ('02', 'Track the streak', 'Every solve lights up today\'s cell on your calendar automatically.'),
+        ('03', 'Review your stats', 'Check your statistics page weekly to see which topics need more reps.'),
+      ] %}
+      {% for number, title, desc in steps %}
+        <div class="relative">
+          <span class="font-display font-bold text-5xl font-mono text-[var(--color-primary)]/15">{{ number }}</span>
+          <h3 class="font-display font-semibold text-lg mt-2 mb-2">{{ title }}</h3>
+          <p class="text-sm text-[var(--color-muted)] leading-relaxed max-w-xs">{{ desc }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ===================== Final CTA ===================== -->
+  <section class="py-20 sm:py-28 border-t border-[var(--color-border)]">
+    <div class="relative overflow-hidden rounded-3xl glass px-6 sm:px-16 py-16 text-center">
+      <div class="absolute inset-0 heatmap-texture pointer-events-none" aria-hidden="true"></div>
+      <div class="relative">
+        <h2 class="font-display font-bold text-3xl sm:text-4xl tracking-tight mb-4">
+          Your streak starts with today's problem
+        </h2>
+        <p class="text-[var(--color-muted)] text-lg max-w-xl mx-auto mb-8">
+          Create an account and log your first submission in under a minute.
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <a href="#" data-endpoint="register"
+             class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-white bg-[var(--color-primary)] hover:opacity-90 transition-opacity shadow-lg shadow-[var(--color-primary)]/20">
+            Create free account
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+          <a href="#" data-endpoint="login"
+             class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium border border-[var(--color-border)] hover:bg-[var(--color-border)]/40 transition-colors">
+            I already have an account
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

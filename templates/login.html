@@ -1,0 +1,122 @@
+{% extends "components/base.html" %}
+
+{% block title %}Log in — LeetCode Tracker{% endblock %}
+
+{% block content %}
+<div class="relative min-h-[calc(100vh-4rem)] flex items-center justify-center py-16 overflow-hidden">
+  <div class="absolute inset-0 heatmap-texture pointer-events-none" aria-hidden="true"></div>
+
+  <div class="relative w-full max-w-md mx-auto px-4">
+    <div class="glass rounded-3xl p-8 sm:p-10 shadow-xl animate-fade-up">
+
+      <div class="mb-8 text-center">
+        <span
+          class="inline-grid place-items-center w-12 h-12 rounded-xl bg-[var(--color-primary)] text-white font-display font-bold mb-4">LT</span>
+        <h1 class="font-display font-bold text-2xl">Welcome back</h1>
+        <p class="text-sm text-[var(--color-muted)] mt-1.5">Log in to pick up your streak where you left off.</p>
+      </div>
+
+      <!-- Form-level error placeholder -->
+      <!-- TODO: JS — show this when login fails (invalid credentials, network error, etc.) -->
+      <div id="login-form-error"
+        class="hidden mb-5 flex items-start gap-2.5 rounded-xl px-4 py-3 text-sm bg-[var(--color-danger)]/10 text-[var(--color-danger)]"
+        role="alert">
+        <i data-lucide="alert-circle" class="w-4 h-4 mt-0.5 shrink-0"></i>
+        <span data-error-text>Incorrect email or password. Please try again.</span>
+      </div>
+
+      <!-- Form-level success placeholder -->
+      <!-- TODO: JS — show briefly before redirecting on successful login -->
+      <div id="login-form-success"
+        class="hidden mb-5 flex items-start gap-2.5 rounded-xl px-4 py-3 text-sm bg-[var(--color-success)]/10 text-[var(--color-success)]"
+        role="status">
+        <i data-lucide="check-circle-2" class="w-4 h-4 mt-0.5 shrink-0"></i>
+        <span data-success-text>Logged in. Redirecting to your dashboard…</span>
+      </div>
+
+      <!-- TODO: JS — intercept submit, run validation (see main.js: Forms > Login validation), then POST -->
+      <form id="login-form" novalidate class="space-y-5" method="POST" action="#">
+
+        <!-- Email -->
+        <div>
+          <label for="login-email" class="block text-sm font-medium mb-1.5">Email</label>
+          <div class="relative">
+            <i data-lucide="mail"
+              class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-muted)]"></i>
+            <input type="email" id="login-email" name="email" required autocomplete="email"
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[var(--color-bg)] border border-[var(--color-border)] focus:border-[var(--color-primary)] outline-none transition-colors text-sm"
+              placeholder="you@example.com" aria-describedby="login-email-error" />
+          </div>
+          <!-- TODO: JS — toggle visible when email is invalid/empty on blur or submit -->
+          <p id="login-email-error" class="hidden mt-1.5 text-xs text-[var(--color-danger)]">Enter a valid email
+            address.</p>
+        </div>
+
+        <!-- Password -->
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label for="login-password" class="block text-sm font-medium">Password</label>
+            <a href="#" data-endpoint="forgot_password"
+              class="text-xs text-[var(--color-primary)] hover:underline">Forgot password?</a>
+          </div>
+          <div class="relative">
+            <i data-lucide="lock"
+              class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--color-muted)]"></i>
+            <input type="password" id="login-password" name="password" required autocomplete="current-password"
+              class="w-full pl-10 pr-11 py-2.5 rounded-xl bg-[var(--color-bg)] border border-[var(--color-border)] focus:border-[var(--color-primary)] outline-none transition-colors text-sm"
+              placeholder="••••••••" aria-describedby="login-password-error" />
+            <!-- Password eye icon placeholder -->
+            <!-- TODO: JS — toggle input type text/password, swap eye / eye-off icon -->
+            <button type="button" id="login-password-toggle"
+              class="absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--color-muted)] hover:text-[var(--color-text)]"
+              aria-label="Show password">
+              <i data-lucide="eye" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <p id="login-password-error" class="hidden mt-1.5 text-xs text-[var(--color-danger)]">Enter your password.</p>
+        </div>
+
+        <!-- Remember me -->
+        <div class="flex items-center justify-between">
+          <label class="flex items-center gap-2 text-sm text-[var(--color-muted)] cursor-pointer select-none">
+            <input type="checkbox" id="remember-me" name="remember_me"
+              class="w-4 h-4 rounded border-[var(--color-border)] text-[var(--color-primary)] focus:ring-[var(--color-primary)]" />
+            Remember me
+          </label>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" id="login-submit-btn"
+          class="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-medium text-white bg-[var(--color-primary)] hover:opacity-90 transition-opacity shadow-lg shadow-[var(--color-primary)]/20">
+          <!-- TODO: JS — swap to a spinner + "Logging in…" while the request is in flight -->
+          <span data-btn-label>Log in</span>
+        </button>
+
+        <!-- Divider -->
+        <div class="flex items-center gap-3 py-1">
+          <span class="flex-1 h-px bg-[var(--color-border)]"></span>
+          <span class="text-xs text-[var(--color-muted)]">or continue with</span>
+          <span class="flex-1 h-px bg-[var(--color-border)]"></span>
+        </div>
+
+        <!-- Social login placeholder -->
+        <div class="grid grid-cols-2 gap-3">
+          <button type="button"
+            class="flex items-center justify-center gap-2 py-2.5 rounded-xl border border-[var(--color-border)] hover:bg-[var(--color-border)]/40 transition-colors text-sm font-medium">
+            <i data-lucide="github" class="w-4 h-4"></i> GitHub
+          </button>
+          <button type="button"
+            class="flex items-center justify-center gap-2 py-2.5 rounded-xl border border-[var(--color-border)] hover:bg-[var(--color-border)]/40 transition-colors text-sm font-medium">
+            <i data-lucide="mail" class="w-4 h-4"></i> Google
+          </button>
+        </div>
+      </form>
+
+      <p class="mt-8 text-center text-sm text-[var(--color-muted)]">
+        Don't have an account?
+        <a href="#" data-endpoint="register" class="text-[var(--color-primary)] font-medium hover:underline">Sign up</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}
