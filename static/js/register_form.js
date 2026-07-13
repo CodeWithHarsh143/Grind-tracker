@@ -45,33 +45,21 @@ function validatePassword(){
 }
 function updateRule(element, passed) {
   const icon = element.querySelector("svg, i");
+  element.classList.toggle("text-green-500", passed);
 
-  if (passed) {
-    element.classList.add("text-green-500");
-  } else {
-    element.classList.remove("text-green-500");
-  }
-
-  if (icon) {
-    icon.outerHTML = passed
-      ? lucide.icons["check-circle"].toSvg({ class: "w-3 h-3" })
-      : lucide.icons.circle.toSvg({ class: "w-3 h-3" });
-  }
+  const newIcon = lucide.createElement(passed ? lucide.CheckCircle : lucide.Circle);
+  newIcon.classList.add("w-3", "h-3");
+  icon.replaceWith(newIcon);
 }
 function toggle_eye() {
   const icon = eyeBtn.querySelector("svg, i");
+  const newIcon = password.type === "password"
+    ? lucide.createElement(lucide.EyeOff)
+    : lucide.createElement(lucide.Eye);
 
-  if (password.type === "password") {
-    password.type = "text";
-    icon.outerHTML = lucide.icons["eye-off"].toSvg({
-      class: "w-4 h-4",
-    });
-  } else {
-    password.type = "password";
-    icon.outerHTML = lucide.icons.eye.toSvg({
-      class: "w-4 h-4",
-    });
-  }
+  newIcon.classList.add("w-4", "h-4");
+  icon.replaceWith(newIcon);
+  password.type = password.type === "password" ? "text" : "password";
 }
 const form = document.getElementById("register-form");
 form.addEventListener("submit",function(e){
@@ -105,7 +93,7 @@ form.addEventListener("submit",function(e){
     valid = false;
   }else{
     email.classList.remove("border-red-500");
-    email.classList.add("border-[var(--color-border)]");
+    email.classList.add("border-[var(--color-border)]");editor.format
     email_error.classList.add("hidden");
   }
   const uppercaseCount = (password.value.match(/[A-Z]/g) || []).length;
