@@ -17,23 +17,6 @@
       </div>
 
       <!-- Form-level error placeholder -->
-      <!-- TODO: JS — show on failed registration (e.g. email already taken) -->
-      <div id="register-form-error"
-        class="hidden mb-5 flex items-start gap-2.5 rounded-xl px-4 py-3 text-sm bg-[var(--color-danger)]/10 text-[var(--color-danger)]"
-        role="alert">
-        <i data-lucide="alert-circle" class="w-4 h-4 mt-0.5 shrink-0"></i>
-        <span data-error-text>That email is already registered.</span>
-      </div>
-
-      <!-- Form-level success placeholder -->
-      <!-- TODO: JS — show on successful registration before redirect -->
-      <div id="register-form-success"
-        class="hidden mb-5 flex items-start gap-2.5 rounded-xl px-4 py-3 text-sm bg-[var(--color-success)]/10 text-[var(--color-success)]"
-        role="status">
-        <i data-lucide="check-circle-2" class="w-4 h-4 mt-0.5 shrink-0"></i>
-        <span data-success-text>Account created. Redirecting…</span>
-      </div>
-
       <!-- TODO: JS — intercept submit, run validation (see main.js: Forms > Registration validation), then POST -->
       <form id="register-form" novalidate class="space-y-5" method="POST" action="#">
 

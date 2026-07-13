@@ -24,7 +24,6 @@
         <i data-lucide="alert-circle" class="w-4 h-4 mt-0.5 shrink-0"></i>
         <span data-error-text>Incorrect email or password. Please try again.</span>
       </div>
-
       <!-- Form-level success placeholder -->
       <!-- TODO: JS — show briefly before redirecting on successful login -->
       <div id="login-form-success"
@@ -120,4 +119,16 @@
     </div>
   </div>
 </div>
+{% endblock %}
+{% block scripts %}
+  <script>
+    const login_error = document.getElementById("login-form-error")
+   {%  if not user %}
+      login_error.classList.remove("hidden")
+    {% else %}
+      login_error.classList.add("hidden")
+    {% endif %}
+  </script>
+<script src="{{ url_for('static', filename='js/login_form.js') }}" defer>
+</script>
 {% endblock %}

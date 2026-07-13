@@ -6,11 +6,13 @@
   synchronously (inline script, head, before stylesheet paint).
 -->
 <html lang="en" class="scroll-smooth">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% block title %}LeetCode Tracker{% endblock %}</title>
-  <meta name="description" content="{% block description %}Track your LeetCode problem-solving journey — streaks, stats, goals, and notes in one dashboard.{% endblock %}" />
+  <meta name="description"
+    content="{% block description %}Track your LeetCode problem-solving journey — streaks, stats, goals, and notes in one dashboard.{% endblock %}" />
 
   <!-- TODO: JS — theme bootstrap script (inline, must run before Tailwind/CSS paint)
        1. Read localStorage('theme')
@@ -39,7 +41,8 @@
     };
   </script>
   <!-- Custom design tokens + signature heatmap texture -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}" />
+  <link rel="stylesheet"
+    href="{{ url_for('static', filename='style/style.css') }}" />
 
   {% block head %}{% endblock %}
 </head>
@@ -51,26 +54,25 @@
 
   <!-- ===================== Flash Messages ===================== -->
   <!-- TODO: JS — auto-dismiss each flash message after ~4s, with a manual close button -->
-  <div id="flash-container" class="fixed top-20 right-4 z-50 flex flex-col gap-3 w-[calc(100%-2rem)] sm:w-96" aria-live="polite">
+  <div id="flash-container" class="fixed top-20 right-4 z-50 flex flex-col gap-3 w-[calc(100%-2rem)] sm:w-96"
+    aria-live="polite">
     {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div
-            class="flash-message animate-toast-in flex items-start gap-3 rounded-xl p-4 shadow-lg glass border-l-4
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="flash-message animate-toast-in flex items-start gap-3 rounded-xl p-4 shadow-lg glass border-l-4
               {{ 'border-[var(--color-success)]' if category == 'success' else
                  'border-[var(--color-danger)]' if category == 'danger' or category == 'error' else
                  'border-[var(--color-warning)]' if category == 'warning' else
-                 'border-[var(--color-accent)]' }}"
-            data-category="{{ category }}"
-            role="status"
-          >
-            <span class="text-sm flex-1 text-[var(--color-text)]">{{ message }}</span>
-            <button type="button" class="flash-dismiss text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors" aria-label="Dismiss message">
-              <i data-lucide="x" class="w-4 h-4"></i>
-            </button>
-          </div>
-        {% endfor %}
-      {% endif %}
+                 'border-[var(--color-accent)]' }}" data-category="{{ category }}" role="status">
+      <span class="text-sm flex-1 text-[var(--color-text)]">{{ message }}</span>
+      <button type="button"
+        class="flash-dismiss text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors"
+        aria-label="Dismiss message">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+    </div>
+    {% endfor %}
+    {% endif %}
     {% endwith %}
   </div>
 
@@ -86,11 +88,16 @@
   {% include "components/footer.html" %}
 
   <!-- Core script (icons, theme toggle, navbar, forms, animations — logic implemented by you) -->
-   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
-  <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}" defer>
+  </script>
+  <script src="{{ url_for('static' , filename='js/flask_message.js') }}"
+    defer>
+  </script>
 
   <!-- TODO: JS — call lucide.createIcons() once DOM + lucide script are ready -->
 
   {% block scripts %}{% endblock %}
 </body>
+
 </html>

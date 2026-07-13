@@ -1,10 +1,13 @@
 console.log("register.js");
 let username = document.getElementById("register-username");
 let password = document.getElementById("register-password");
-let eyeBtn = document.getElementById('register-password-toggle');
+let confirm_password = document.getElementById("register-confirm-password");
+let eyeBtn_pass = document.getElementById('register-password-toggle');
+let eyeBtn_confim_pass = document.getElementById('register-confirm-toggle')
 username.addEventListener("input",validateUsername);
 password.addEventListener("input",validatePassword);
-eyeBtn.addEventListener("click",toggle_eye);
+eyeBtn_pass.addEventListener("click",(e)=>{toggle_eye(e,password)});
+eyeBtn_confim_pass.addEventListener("click",(e)=>{toggle_eye(e,confirm_password)});
 function validateUsername(){
   let username_value = username.value.trim();
   checkLength("register-username-error" , username_value.length>=3);
@@ -51,15 +54,15 @@ function updateRule(element, passed) {
   newIcon.classList.add("w-3", "h-3");
   icon.replaceWith(newIcon);
 }
-function toggle_eye() {
-  const icon = eyeBtn.querySelector("svg, i");
-  const newIcon = password.type === "password"
+function toggle_eye(e,ele) {
+  const icon = e.currentTarget.querySelector("svg, i");
+  const newIcon = ele.type === "password"
     ? lucide.createElement(lucide.EyeOff)
     : lucide.createElement(lucide.Eye);
 
   newIcon.classList.add("w-4", "h-4");
   icon.replaceWith(newIcon);
-  password.type = password.type === "password" ? "text" : "password";
+  ele.type = ele.type === "password" ? "text" : "password";
 }
 const form = document.getElementById("register-form");
 form.addEventListener("submit",function(e){
@@ -93,7 +96,7 @@ form.addEventListener("submit",function(e){
     valid = false;
   }else{
     email.classList.remove("border-red-500");
-    email.classList.add("border-[var(--color-border)]");editor.format
+    email.classList.add("border-[var(--color-border)]");
     email_error.classList.add("hidden");
   }
   const uppercaseCount = (password.value.match(/[A-Z]/g) || []).length;

@@ -11,7 +11,7 @@
     <div class="flex items-center justify-between h-16">
 
       <!-- Logo -->
-      <a href="{{ url_for('home') if 'home' in (request.url_rule.endpoint if request.url_rule else '') else '/' }}"
+      <a href="{{ url_for('home.home') if 'home' in (request.url_rule.endpoint if request.url_rule else '') else '/' }}"
         class="flex items-center gap-2 shrink-0 group" aria-label="LeetCode Tracker home">
         <span
           class="grid place-items-center w-9 h-9 rounded-lg bg-[var(--color-primary)] text-white font-display font-bold text-sm transition-transform group-hover:scale-105">
@@ -73,7 +73,7 @@
 
         <!-- Auth buttons: show/hide with JS or Jinja based on session -->
         <div class="hidden sm:flex items-center gap-2" id="auth-buttons">
-          {% if session and session.get('user_id') %}
+          {% if current_user.is_authenticated %}
           <!-- Profile dropdown trigger -->
           <div class="relative" id="profile-menu">
             <button type="button" id="profile-menu-btn"
@@ -109,7 +109,7 @@
             class="px-4 py-2 rounded-lg text-sm font-medium text-[var(--color-text)] hover:bg-[var(--color-border)]/40 transition-colors">
             Log in
           </a>
-          <a href="{{ '#' }}" data-endpoint="register"
+          <a href="{{ url_for('register.register') }}" data-endpoint="register"
             class="px-4 py-2 rounded-lg text-sm font-medium text-white bg-[var(--color-primary)] hover:opacity-90 transition-opacity shadow-sm">
             Sign up
           </a>
@@ -147,7 +147,7 @@
     </a>
     {% endfor %}
     <hr class="my-2 border-[var(--color-border)]" />
-    {% if session and session.get('user_id') %}
+    {% if current_user.is_authenticated %}
     <button type="button" id="logout-btn-mobile"
       class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[var(--color-danger)] hover:bg-[var(--color-danger)]/10">
       <i data-lucide="log-out" class="w-4 h-4"></i> Logout
