@@ -72,7 +72,7 @@
         </button>
 
         <!-- Auth buttons: show/hide with JS or Jinja based on session -->
-        <div class="hidden sm:flex items-center gap-2" id="auth-buttons">
+        <div class=" sm:flex items-center gap-2" id="auth-buttons">
           {% if current_user.is_authenticated %}
           <!-- Profile dropdown trigger -->
           <div class="relative" id="profile-menu">
@@ -100,7 +100,7 @@
               <button type="button"
                 class="w-full flex items-center gap-2 px-3 py-2 text-left text-[var(--color-danger)] hover:bg-[var(--color-danger)]/10"
                 id="logout-btn">
-                <i data-lucide="log-out" class="w-4 h-4"></i> Logout
+                  <i data-lucide="log-out" class="w-4 h-4"></i> <a href="{{url_for('login.logout')}}">Logout</a>
               </button>
             </div>
           </div>
@@ -160,3 +160,6 @@
     {% endif %}
   </div>
 </nav>
+
+
+
