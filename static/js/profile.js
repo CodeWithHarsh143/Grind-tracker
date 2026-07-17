@@ -1,6 +1,5 @@
 import { userNameStatus } from "./api.js";
 
-const bioInput = document.getElementById("profile-bio");
 const usernameInput = document.getElementById("profile-username");
 // ------------------------User name checking feature ---------------------------
 const usernameError = document.getElementById("profile-username-error");
@@ -59,17 +58,28 @@ usernameInput.addEventListener("input", () => {
 });
 
 //------------------------------------Bio feature--------------------------------------------------------------------
-let bio_chart = document.getElementById("bio-char-count");
-let prev = bioInput.value.trim().length;
-let wordLimit = bioInput.value.trim().length;
-bio_chart.textContent = `${wordLimit}/ 160}`;
-bioInput.addEventListener("input", (e) => {
-  let current = e.target.value.trim();
-  if (wordLimit >= 160 && e.inputType.startsWith("insert")) {
-    e.preventDefault();
+const bioInput = document.getElementById("profile-bio");
+const counter = document.getElementById("bio-char-count");
+
+const limit = 160;
+
+function updateCounter() {
+  const text = bioInput.value.trim();
+
+  // Handle empty input
+  const words = text === "" ? [] : text.split(/\s+/);
+  const length = words.length;
+
+  counter.textContent = `${length}/${limit}`;
+
+  if (length > limit) {
+    bioInput.value = words.slice(0, limit).join(" ");
+    counter.textContent = `${limit}/${limit}`;
   }
-  if (current.length < prev.length) wordLimit--;
-  else if (e.data != "") wordLimit++;
-  bio_chart.textContent = `${wordLimit}/160`;
-  prev = current;
-});
+}
+
+// Initial count
+updateCounter();
+
+// Update on typing
+bioInput.addEventListener("input", updateCounter);
