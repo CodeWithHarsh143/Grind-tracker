@@ -83,3 +83,43 @@ updateCounter();
 
 // Update on typing
 bioInput.addEventListener("input", updateCounter);
+
+//---------------------------------------------URL feature ---------------------------------------
+const patterns = {
+  "leetcode-link": /^https:\/\/(www\.)?leetcode\.com\/(u\/)?[A-Za-z0-9_-]+\/?$/,
+  "github-link": /^https:\/\/(www\.)?github\.com\/[A-Za-z0-9_-]+\/?$/,
+  "linkedin-link": /^https:\/\/(www\.)?linkedin\.com\/in\/[A-Za-z0-9-]+\/?$/,
+};
+
+function checkURL(event) {
+  const input = event.currentTarget;
+  const url = input.value.trim();
+  const error = document.getElementById(`${input.id}-error`);
+
+  if (url === "") {
+    error.classList.add("hidden");
+    return;
+  }
+
+  // Platform-specific validation
+  if (patterns[input.id]) {
+    if (patterns[input.id].test(url)) {
+      error.classList.add("hidden");
+    } else {
+      error.classList.remove("hidden");
+    }
+    return; // Stop here for platform URLs
+  }
+
+  // Generic website validation
+  try {
+    new URL(url);
+    error.classList.add("hidden");
+  } catch {
+    error.classList.remove("hidden");
+  }
+}
+
+document.querySelectorAll("input[type='url']").forEach((input) => {
+  input.addEventListener("blur", checkURL);
+});
