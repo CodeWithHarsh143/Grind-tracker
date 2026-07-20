@@ -16,7 +16,9 @@ class User(db.Model, UserMixin):
 
     password: Mapped[str] = mapped_column(String(255), nullable=False)
 
-    profile: Mapped["UserProfile"] = relationship(back_populates="user", uselist=False)
+    profile: Mapped["UserProfile"] = relationship(
+        back_populates="user", uselist=False, cascade="all, delete-orphan"
+    )
 
 
 class UserProfile(db.Model):
@@ -29,9 +31,9 @@ class UserProfile(db.Model):
 
     bio: Mapped[str | None] = mapped_column(String(500))
 
-    leetcode: Mapped[str | None] = mapped_column(String)
-    github: Mapped[str | None] = mapped_column(String)
-    linkedin: Mapped[str | None] = mapped_column(String)
+    leetcode_url: Mapped[str | None] = mapped_column(String)
+    github_url: Mapped[str | None] = mapped_column(String)
+    linkedin_url: Mapped[str | None] = mapped_column(String)
     personal_website: Mapped[str | None] = mapped_column(String)
 
     public_profile: Mapped[bool] = mapped_column(Boolean, default=False)
