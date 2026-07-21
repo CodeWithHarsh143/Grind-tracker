@@ -133,27 +133,72 @@ document.querySelectorAll("input[type='url']").forEach((input) => {
   input.addEventListener("blur", checkURL);
 });
 //--------------------------------------------------prefrence-------------------------------------------
-const prefrence = document.getElementById("public-profile-toggle")
-const streak_reminder = document.getElementById("streak-reminder-toggle")
-const difficulty = document.getElementById("default-difficulty")
+const toggle = document.getElementById("public-profile-toggle");
+const emailToggle = document.getElementById("streak-reminder-toggle");
 
-prefrence.addEventListener("click" , ()=>{
-  prefrence.value = (prefrence.value === true?false:true)
-})
-streak_reminder.addEventListener("click",()=>{
-  streak_reminder.value = (streak_reminder.value === true ? false:true)
-})
+const publicInput = document.getElementById("public-profile-input");
+const streakInput = document.getElementById("streak-reminder-input");
+
+let isPublic = toggle.getAttribute("aria-checked") === "true";
+let isStreak = emailToggle.getAttribute("aria-checked") === "true";
+
+updateUI(toggle, isPublic);
+updateUI(emailToggle, isStreak);
+
+toggle.addEventListener("click", () => {
+    isPublic = !isPublic;
+    updateUI(toggle, isPublic);
+});
+
+emailToggle.addEventListener("click", () => {
+    isStreak = !isStreak;
+    updateUI(emailToggle, isStreak);
+});
+
+function updateUI(toggle, state) {
+    const knob = toggle.querySelector("span");
+
+    toggle.setAttribute("aria-checked", state);
+
+    if (state) {
+        toggle.classList.remove("bg-[var(--color-border)]");
+        toggle.classList.add("bg-[var(--color-primary)]");
+
+        knob.classList.remove("translate-x-1");
+        knob.classList.add("translate-x-6");
+    } else {
+        toggle.classList.remove("bg-[var(--color-primary)]");
+        toggle.classList.add("bg-[var(--color-border)]");
+
+        knob.classList.remove("translate-x-6");
+        knob.classList.add("translate-x-1");
+    }
+}
 // ------------------------------------------------Delete Account-------------------------
 const deleteBtn = document.getElementById("delete-account-btn")
-const canelBtn = document.getElementById("cancel-delete")
-const delete_model = document.getElementById("delete-model")
-const conformBtn = document.getElementById("confirm-delete")
+const cancelBtn = document.getElementById("cancel-delete")
+const delete_model = document.getElementById("delete-modal")
+const confirmBtn = document.getElementById("confirm-delete")
+const modelContent = document.getElementById("delete-modal-content")
 deleteBtn.addEventListener("click" , ()=>{
   delete_model.classList.remove("hidden")
+  delete_model.classList.add("flex")
+  requestAnimationFrame(() => {
+        modalContent.classList.remove("scale-95", "opacity-0");
+        modalContent.classList.add("scale-100", "opacity-100");
+    });
 })
-cancelBtn.addEventListener("click" , ()=>{
-  delete_model.classList.add("Hidden")
-})
+cancelBtn.addEventListener("click", () => {
+
+    modalContent.classList.remove("scale-100", "opacity-100");
+    modalContent.classList.add("scale-95", "opacity-0");
+
+    setTimeout(() => {
+        delete_modal.classList.remove("flex");
+        delete_modal.classList.add("hidden");
+    }, 200);
+
+});
 confirmBtn.addEventListener("click", async () => {
     const response = await fetch("/delete-account", { // send login session cookie
         method: "POST",
@@ -170,7 +215,7 @@ confirmBtn.addEventListener("click", async () => {
 });
 
 //----------------------------------------------------------Save Changes---------------------
-const form = document.getElementById("setting-form");
+const form = document.getElementById("profile-form");
 form.addEventListener("submit" , async (e)=>{
   e.preventDefault();
   let valid = true;
@@ -180,4 +225,15 @@ form.addEventListener("submit" , async (e)=>{
   }else{
     nameError.classList.add("hidden")
   }
+  if(usernameInput.value.length === 0){
+    usernameError.classList.remove("hidden")
+    valid = false;
+  }
+  else{
+    usernameError.classList.add("hidden")
+  }
+
+  if(valid)
+    form.submit();
+
 })
