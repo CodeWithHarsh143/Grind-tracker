@@ -233,7 +233,24 @@ form.addEventListener("submit" , async (e)=>{
     usernameError.classList.add("hidden")
   }
 
-  if(valid)
+  if(valid){
+     const payload = {
+        public_profile: isPublic,
+        streak_reminder: isStreak,
+        // baaki fields...
+        username: usernameInput.value,
+        bio: bioInput.value,
+        name:name.value
+    };
+
+    const response = await fetch("/profile-settings", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    });
     form.submit();
+  }
 
 })
