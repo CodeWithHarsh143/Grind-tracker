@@ -163,13 +163,16 @@
                 <p class="text-sm font-medium">Public profile</p>
                 <p class="text-xs text-[var(--color-muted)] mt-0.5">Let others view your stats and linked profiles.</p>
               </div>
-              <button type="button" id="public-profile-toggle" role="switch" aria-checked="false"
-                class="relative inline-flex h-6 w-11 items-center rounded-full bg-[var(--color-border)] transition-colors"
-                value="{{ current_user.public_profile if current_user.profile else False }}">
+              <button type="button" id="public-profile-toggle" role="switch"
+                aria-checked="{{ 'true' if current_user.profile.public_profile else 'false' }}"
+                class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors
+  {{ 'bg-[var(--color-primary)]' if current_user.profile.public_profile else 'bg-[var(--color-border)]' }}">
+
                 <span
-                  class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-1"></span>
+                  class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform
+    {{ 'translate-x-6' if current_user.profile.public_profile else 'translate-x-1' }}">
+                </span>
               </button>
-              <input type="hidden" id="public-profile-input" name="is_public" value="false" />
             </div>
 
             <!-- Email notifications toggle -->
@@ -179,13 +182,18 @@
                 <p class="text-xs text-[var(--color-muted)] mt-0.5">Get a nudge if you haven't logged a problem by
                   evening.</p>
               </div>
-              <button type="button" id="streak-reminder-toggle" role="switch" aria-checked="true"
-                class="relative inline-flex h-6 w-11 items-center rounded-full bg-[var(--color-primary)] transition-colors"
-                value="{{ current_user.profile.streak_reminder if current_user.profile else False }}">
+              <button type="button" id="streak-reminder-toggle" role="switch"
+                aria-checked="{{ 'true' if current_user.profile.streak_reminder else 'false' }}"
+                class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors
+    {{ 'bg-[var(--color-primary)]' if current_user.profile.streak_reminder else 'bg-[var(--color-border)]' }}">
+
                 <span
-                  class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-6"></span>
+                  class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform
+        {{ 'translate-x-6' if current_user.profile.streak_reminder else 'translate-x-1' }}">
+                </span>
+
               </button>
-              <input type="hidden" id="streak-reminder-input" name="streak_reminders" value="true" />
+
             </div>
 
             <!-- Preferred difficulty -->
@@ -261,19 +269,66 @@
               </button>
             </div>
           </div>
-          <div id="delete-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center">
-            <div class="bg-white rounded-xl p-6 w-96">
-              <h2 class="text-lg font-semibold text-red-600">Delete account?</h2>
+          <!-- Backdrop -->
+          <div id="delete-modal"
+            class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/40 backdrop-blur-sm">
 
-              <p class="mt-2 text-sm">
-                This action cannot be undone.
+            <!-- Modal -->
+            <div class="w-full max-w-md rounded-3xl bg-white shadow-2xl border border-gray-200 p-8">
+
+              <!-- Icon -->
+              <div class="flex justify-center">
+                <div class="flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
+                  <i data-lucide="trash-2" class="h-8 w-8 text-red-600"></i>
+                </div>
+              </div>
+
+              <!-- Title -->
+              <h2 class="mt-6 text-center text-2xl font-semibold text-gray-900">
+                Delete account
+              </h2>
+
+              <!-- Description -->
+              <p class="mt-3 text-center text-sm leading-6 text-gray-500">
+                Your account and all associated data will be permanently deleted.
               </p>
 
-              <div class="mt-6 flex justify-end gap-3">
-                <button id="cancel-delete">Cancel</button>
-                <button id="confirm-delete">Delete</button>
+              <!-- Warning -->
+              <div class="mt-6 flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4">
+
+                <i data-lucide="alert-circle" class="mt-0.5 h-5 w-5 shrink-0 text-red-600"></i>
+
+                <p class="text-sm text-red-700">
+                  <span class="font-medium">This action cannot be undone.</span>
+                  Once deleted, your problems, streaks, goals, notes, and
+                  statistics will be permanently removed.
+                </p>
               </div>
+
+              <!-- Divider -->
+              <div class="my-6 border-t border-gray-200"></div>
+
+              <!-- Buttons -->
+              <div class="flex justify-end gap-3">
+
+                <button id="cancel-delete"
+                  class="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-gray-100">
+
+                  <i data-lucide="x" class="h-4 w-4"></i>
+                  Cancel
+                </button>
+
+                <button id="confirm-delete"
+                  class="inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-red-700">
+
+                  <i data-lucide="trash-2" class="h-4 w-4"></i>
+                  Delete account
+                </button>
+
+              </div>
+
             </div>
+
           </div>
   </form>
 </div>

@@ -1,6 +1,6 @@
 from werkzeug.security import check_password_hash
 from flask_login import login_user, logout_user, login_required, current_user
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from app.extension import db
 from app.model import User
 from app.extension import login_manager
@@ -37,11 +37,11 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-@login_bp.route("/delete-account")
+@login_bp.route("/delete-account", methods=["POST"])
 @login_required
 def delete_account():
-    user = current_user
-    logout()
+    user = User.query.get(current_user.id)
+    logout_user()
     db.session.delete(user)
     db.session.commit()
-    return 200, ""
+    return jsonify({"success": True}), 200
