@@ -101,6 +101,7 @@ const patterns = {
 const leetcode_link = document.getElementById("leetcode-link");
 const github_link  = document.getElementById("github-link");
 const linkdin_link  = document.getElementById("linkdin-link");
+const website_link = document.getElementById("website-link")
 function checkURL(event) {
   const input = event.currentTarget;
   const url = input.value.trim();
@@ -215,6 +216,7 @@ confirmBtn.addEventListener("click", async () => {
 });
 
 //----------------------------------------------------------Save Changes---------------------
+const difficulty  = document.getElementById("default-difficulty")
 const form = document.getElementById("profile-form");
 form.addEventListener("submit" , async (e)=>{
   e.preventDefault();
@@ -233,7 +235,29 @@ form.addEventListener("submit" , async (e)=>{
     usernameError.classList.add("hidden")
   }
 
-  if(valid)
+  if(valid){
+     const payload = {
+        public_profile: isPublic,
+        streak_reminder: isStreak,
+        // baaki fields...
+        username: usernameInput.value,
+        bio: bioInput.value,
+        name:name.value,
+        difficulty_select = difficulty.value,
+        leetcode = leetcode_link.value,
+        github = github_link.value,
+        linkedin = linkdin_link.value,
+        website = website_link.value
+    };
+
+    const response = await fetch("/profile-settings", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    });
     form.submit();
+  }
 
 })

@@ -34,7 +34,7 @@ class UserProfile(db.Model):
     leetcode_url: Mapped[str | None] = mapped_column(String)
     github_url: Mapped[str | None] = mapped_column(String)
     linkedin_url: Mapped[str | None] = mapped_column(String)
-    personal_website: Mapped[str | None] = mapped_column(String)
+    website_link: Mapped[str | None] = mapped_column(String)
 
     public_profile: Mapped[bool] = mapped_column(Boolean, default=False)
     streak_reminder: Mapped[bool] = mapped_column(Boolean, default=True)
